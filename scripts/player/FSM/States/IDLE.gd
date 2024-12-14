@@ -10,7 +10,8 @@ func update(delta):
 	if player.is_on_floor():
 		if Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
 			Transitioned.emit(self, "RUN")
-			print("Transitioned to RUN")
+		elif Input.is_action_just_pressed("move_up"):
+			Transitioned.emit(self, "JUMP")
 	elif !player.is_on_floor():
 		Transitioned.emit(self, "FALL")
 

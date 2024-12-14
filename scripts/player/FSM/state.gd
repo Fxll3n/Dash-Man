@@ -2,7 +2,7 @@ extends Node
 class_name State
 
 @onready var sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
-
+@export var maxGravity := 3000
 var player: CharacterBody2D
 
 signal Transitioned

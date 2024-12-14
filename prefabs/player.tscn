@@ -1,10 +1,11 @@
-[gd_scene load_steps=32 format=3 uid="uid://uabgjrf8401u"]
+[gd_scene load_steps=37 format=3 uid="uid://uabgjrf8401u"]
 
 [ext_resource type="Texture2D" uid="uid://bo84prs7wvahw" path="res://assets/art/sprites/knight.png" id="1_iqh2s"]
 [ext_resource type="Script" path="res://scripts/player/FSM/state_machine.gd" id="2_xvjmg"]
 [ext_resource type="Script" path="res://scripts/player/FSM/States/IDLE.gd" id="3_xflir"]
 [ext_resource type="Script" path="res://scripts/player/FSM/States/FALL.gd" id="4_luhe5"]
 [ext_resource type="Script" path="res://scripts/player/FSM/States/RUN.gd" id="5_mnihd"]
+[ext_resource type="Script" path="res://scripts/player/FSM/States/JUMP.gd" id="6_sl654"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_chrlk"]
 atlas = ExtResource("1_iqh2s")
@@ -37,6 +38,22 @@ region = Rect2(64, 0, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_dsn4r"]
 atlas = ExtResource("1_iqh2s")
 region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xbl80"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(32, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qrxqk"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(64, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2o8p3"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(224, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_36pol"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(192, 160, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fewvt"]
 atlas = ExtResource("1_iqh2s")
@@ -140,6 +157,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_xbl80")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qrxqk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2o8p3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_36pol")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_fewvt")
 }, {
 "duration": 1.0,
@@ -203,7 +237,7 @@ floor_constant_speed = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_k5v8m")
-animation = &"run"
+animation = &"jump"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -220,8 +254,14 @@ friction = 500.0
 
 [node name="FALL" type="Node" parent="StateMachine"]
 script = ExtResource("4_luhe5")
+airControlFactor = 0.8
 
 [node name="RUN" type="Node" parent="StateMachine"]
 script = ExtResource("5_mnihd")
 
+[node name="JUMP" type="Node" parent="StateMachine"]
+script = ExtResource("6_sl654")
+
 [node name="FootstepPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="JumpPlayer" type="AudioStreamPlayer" parent="."]
