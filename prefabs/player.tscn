@@ -1,6 +1,26 @@
-[gd_scene load_steps=24 format=3 uid="uid://uabgjrf8401u"]
+[gd_scene load_steps=32 format=3 uid="uid://uabgjrf8401u"]
 
 [ext_resource type="Texture2D" uid="uid://bo84prs7wvahw" path="res://assets/art/sprites/knight.png" id="1_iqh2s"]
+[ext_resource type="Script" path="res://scripts/player/FSM/state_machine.gd" id="2_xvjmg"]
+[ext_resource type="Script" path="res://scripts/player/FSM/States/IDLE.gd" id="3_xflir"]
+[ext_resource type="Script" path="res://scripts/player/FSM/States/FALL.gd" id="4_luhe5"]
+[ext_resource type="Script" path="res://scripts/player/FSM/States/RUN.gd" id="5_mnihd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_chrlk"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(96, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nnn5o"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(128, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_32nun"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(160, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fcl6q"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(64, 160, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6rb38"]
 atlas = ExtResource("1_iqh2s")
@@ -86,6 +106,23 @@ region = Rect2(224, 96, 32, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_chrlk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nnn5o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_32nun")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fcl6q")
+}],
+"loop": true,
+"name": &"fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_6rb38")
 }, {
 "duration": 1.0,
@@ -161,14 +198,28 @@ height = 14.0
 
 [node name="Player" type="CharacterBody2D"]
 texture_filter = 1
+floor_constant_speed = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_k5v8m")
-animation = &"idle"
+animation = &"fall"
 autoplay = "idle"
-frame_progress = 0.0313126
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
 shape = SubResource("CapsuleShape2D_4mfs3")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_xvjmg")
+initial_state = NodePath("IDLE")
+
+[node name="IDLE" type="Node" parent="StateMachine"]
+script = ExtResource("3_xflir")
+friction = 500.0
+
+[node name="FALL" type="Node" parent="StateMachine"]
+script = ExtResource("4_luhe5")
+
+[node name="RUN" type="Node" parent="StateMachine"]
+script = ExtResource("5_mnihd")
