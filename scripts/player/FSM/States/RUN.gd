@@ -2,12 +2,16 @@ extends State
 class_name RUN
 
 @export var moveSpeed := 340
-var direction
+var direction = 0
+var calculate_run_animation_fps = func() -> float:
+	return abs((moveSpeed*0.38) / sprite_2d.sprite_frames.get_frame_count("run"))
 
 func enter():
 	sprite_2d.play("run")
+	sprite_2d.sprite_frames.set_animation_speed("run", calculate_run_animation_fps.call())
 
 func update(delta):
+	animate()
 	if player.is_on_floor():
 		if direction != 0:
 			if Input.is_action_just_pressed("dash"):
@@ -29,3 +33,9 @@ func physics_update(delta):
 			Transitioned.emit(self, "IDLE")
 	
 	player.move_and_slide()
+
+func animate():
+	if direction < 0:
+		sprite_2d.flip_h = true
+	elif direction > 0:
+		sprite_2d.flip_h = false
