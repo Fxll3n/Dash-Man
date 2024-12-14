@@ -223,3 +223,5 @@ script = ExtResource("4_luhe5")
 
 [node name="RUN" type="Node" parent="StateMachine"]
 script = ExtResource("5_mnihd")
+
+[node name="FootstepPlayer" type="AudioStreamPlayer" parent="."]
