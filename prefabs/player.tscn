@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://uabgjrf8401u"]
+[gd_scene load_steps=46 format=3 uid="uid://uabgjrf8401u"]
 
 [ext_resource type="Texture2D" uid="uid://bo84prs7wvahw" path="res://assets/art/sprites/knight.png" id="1_iqh2s"]
 [ext_resource type="Script" path="res://scripts/player/FSM/state_machine.gd" id="2_xvjmg"]
@@ -6,6 +6,36 @@
 [ext_resource type="Script" path="res://scripts/player/FSM/States/FALL.gd" id="4_luhe5"]
 [ext_resource type="Script" path="res://scripts/player/FSM/States/RUN.gd" id="5_mnihd"]
 [ext_resource type="Script" path="res://scripts/player/FSM/States/JUMP.gd" id="6_sl654"]
+[ext_resource type="Script" path="res://scripts/player/FSM/States/DASH.gd" id="7_m08gf"]
+[ext_resource type="Script" path="res://scripts/cooldown_progress.gd" id="8_b88sf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hmqg5"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(32, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lg2po"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(64, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hmyul"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(96, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3hchx"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(128, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t26fk"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(160, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tfp7e"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(192, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p3jjr"]
+atlas = ExtResource("1_iqh2s")
+region = Rect2(224, 160, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_chrlk"]
 atlas = ExtResource("1_iqh2s")
@@ -123,6 +153,32 @@ region = Rect2(224, 96, 32, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_hmqg5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lg2po")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hmyul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3hchx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t26fk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tfp7e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p3jjr")
+}],
+"loop": true,
+"name": &"dash",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_chrlk")
 }, {
 "duration": 1.0,
@@ -237,12 +293,20 @@ floor_constant_speed = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_k5v8m")
-animation = &"jump"
+animation = &"dash"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
 shape = SubResource("CapsuleShape2D_4mfs3")
+
+[node name="DashCooldown" type="Timer" parent="."]
+unique_name_in_owner = true
+one_shot = true
+
+[node name="FootstepPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="JumpPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("2_xvjmg")
@@ -262,6 +326,19 @@ script = ExtResource("5_mnihd")
 [node name="JUMP" type="Node" parent="StateMachine"]
 script = ExtResource("6_sl654")
 
-[node name="FootstepPlayer" type="AudioStreamPlayer" parent="."]
+[node name="DASH" type="Node" parent="StateMachine"]
+script = ExtResource("7_m08gf")
+dashSpeed = 340.0
 
-[node name="JumpPlayer" type="AudioStreamPlayer" parent="."]
+[node name="Cooldown_Progress" type="ProgressBar" parent="."]
+visible = false
+offset_left = -9.0
+offset_top = 14.0
+offset_right = 31.0
+offset_bottom = 54.0
+scale = Vector2(0.480002, 0.16828)
+max_value = 1.0
+show_percentage = false
+script = ExtResource("8_b88sf")
+
+[connection signal="dashStarted" from="StateMachine/DASH" to="Cooldown_Progress" method="_on_dash_dash_started"]

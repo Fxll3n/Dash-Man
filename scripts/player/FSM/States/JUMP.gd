@@ -23,6 +23,9 @@ func update(delta):
 		Transitioned.emit(self, "FALL")
 	elif player.is_on_floor():
 		Transitioned.emit(self, "IDLE")
+	elif Input.is_action_just_pressed("dash"):
+		if dash_cooldown.is_stopped():
+			Transitioned.emit(self, "DASH")
 
 func physics_update(delta):
 	if !player.is_on_floor():

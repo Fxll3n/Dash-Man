@@ -23,8 +23,10 @@ func update(delta):
 				Transitioned.emit(self, "DASH")
 			elif Input.is_action_just_pressed("move_up"):
 				Transitioned.emit(self, "JUMP")
+			elif Input.is_action_just_pressed("dash"):
+				if dash_cooldown.is_stopped():
+					Transitioned.emit(self, "DASH")
 	else:
-		print("Transitioned to IDLE")
 		Transitioned.emit(self, "IDLE")
 	
 

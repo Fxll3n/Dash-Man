@@ -199,9 +199,14 @@ position = Vector2(97, 3)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 physics_interpolation_mode = 1
-position = Vector2(97, 3)
+position = Vector2(192, 44)
 zoom = Vector2(3, 3)
 process_callback = 0
+limit_left = 0
+limit_top = -64
+limit_right = 1072
+limit_bottom = 256
+editor_draw_limits = true
 
 [node name="PhantomCameraHost" type="Node" parent="Camera2D"]
 process_priority = 300
@@ -210,10 +215,15 @@ script = ExtResource("3_13ajb")
 
 [node name="PhantomCamera2D" type="Node2D" parent="." node_paths=PackedStringArray("follow_target")]
 top_level = true
-position = Vector2(97, 3)
+position = Vector2(192, 44)
 script = ExtResource("4_tqykd")
 follow_mode = 2
 follow_target = NodePath("../Entities/Player")
 zoom = Vector2(3, 3)
 tween_resource = SubResource("Resource_hch73")
 follow_damping = true
+draw_limits = true
+limit_left = 16
+limit_right = 1072
+limit_bottom = 672
+limit_target = NodePath("../TileMap/Collidable")

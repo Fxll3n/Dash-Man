@@ -8,6 +8,9 @@ func enter():
 	player.velocity.x = player.velocity.x
 
 func update(delta):
+	if Input.is_action_just_pressed("dash"):
+		if dash_cooldown.is_stopped():
+			Transitioned.emit(self, "DASH")
 	if player.is_on_floor():
 		Transitioned.emit(self, "IDLE")
 
