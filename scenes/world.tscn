@@ -217,13 +217,34 @@ script = ExtResource("3_13ajb")
 top_level = true
 position = Vector2(192, 44)
 script = ExtResource("4_tqykd")
-follow_mode = 2
+follow_mode = 5
 follow_target = NodePath("../Entities/Player")
 zoom = Vector2(3, 3)
+snap_to_pixel = true
 tween_resource = SubResource("Resource_hch73")
 follow_damping = true
+dead_zone_width = 0.091
+dead_zone_height = 0.108
 draw_limits = true
 limit_left = 16
 limit_right = 1072
 limit_bottom = 672
 limit_target = NodePath("../TileMap/Collidable")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+offset_right = 94.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "IDLE"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true

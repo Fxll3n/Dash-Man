@@ -318,17 +318,22 @@ friction = 500.0
 
 [node name="FALL" type="Node" parent="StateMachine"]
 script = ExtResource("4_luhe5")
-airControlFactor = 0.8
+moveSpeed = 230
+airControlFactor = 1.8
+maxSpeed = 200
 
 [node name="RUN" type="Node" parent="StateMachine"]
 script = ExtResource("5_mnihd")
 
 [node name="JUMP" type="Node" parent="StateMachine"]
 script = ExtResource("6_sl654")
+maxSpeed = 100
 
 [node name="DASH" type="Node" parent="StateMachine"]
 script = ExtResource("7_m08gf")
-dashSpeed = 340.0
+dashSpeed = 250.0
+dashDuration = 0.4
+dashCooldown = 2.0
 
 [node name="Cooldown_Progress" type="ProgressBar" parent="."]
 visible = false

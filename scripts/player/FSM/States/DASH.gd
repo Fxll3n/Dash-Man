@@ -11,9 +11,10 @@ var dashDurTimer = Timer.new()
 signal dashStarted
 
 var calculate_fps = func():
-	return (1/dashDuration)*(sprite_2d.sprite_frames.get_frame_count("dash"))-15
+	return (1/dashDuration)*(sprite_2d.sprite_frames.get_frame_count("dash"))
 
 func enter():
+	print("Entered", name)
 	add_child(dashDurTimer)
 	dashDurTimer.one_shot = true
 	sprite_2d.play("dash")
@@ -31,16 +32,19 @@ func enter():
 func update(delta):
 	if player.is_on_floor():
 		if dashDurTimer.is_stopped():
-			dash_cooldown.start()
 			dashStarted.emit()
-			Transitioned.emit(self, "IDLE")
+			if direction == 0:
+				Transitioned.emit(self, "IDLE")
+			else:
+				Transitioned.emit(self, "RUN")
 	else:
 		if dashDurTimer.is_stopped():
-			dash_cooldown.start(dashCooldown)
 			dashStarted.emit()
 			Transitioned.emit(self, "FALL")
 
 func physics_update(delta):
+	
+	direction = Input.get_axis("move_left", "move_right")
 	
 	if !player.is_on_floor():
 		if player.velocity.y < maxGravity:
@@ -50,3 +54,5 @@ func physics_update(delta):
 
 func exit():
 	remove_child(dashDurTimer)
+	dash_cooldown.start()
+	

@@ -4,6 +4,7 @@ class_name IDLE
 @export var friction := 340.0
 
 func enter():
+	print("Entered", name)
 	sprite_2d.play("idle")
 
 func update(delta):

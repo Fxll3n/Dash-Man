@@ -11,6 +11,7 @@ var calculate_run_animation_fps = func() -> float:
 	return abs((moveSpeed*0.38) / sprite_2d.sprite_frames.get_frame_count("run"))
 
 func enter():
+	print("Entered", name)
 	sprite_2d.play("run")
 	footstep_player.stream = sfx
 	sprite_2d.sprite_frames.set_animation_speed("run", calculate_run_animation_fps.call())
@@ -19,11 +20,10 @@ func update(delta):
 	animate()
 	if player.is_on_floor():
 		if direction != 0:
-			if Input.is_action_just_pressed("dash"):
-				Transitioned.emit(self, "DASH")
-			elif Input.is_action_just_pressed("move_up"):
+			if Input.is_action_just_pressed("move_up"):
 				Transitioned.emit(self, "JUMP")
 			elif Input.is_action_just_pressed("dash"):
+				print("is dash ready: ", dash_cooldown.is_stopped())
 				if dash_cooldown.is_stopped():
 					Transitioned.emit(self, "DASH")
 	else:

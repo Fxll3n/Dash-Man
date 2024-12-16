@@ -3,6 +3,7 @@ class_name JUMP
 
 @export var jumpStrength := 400
 @export var moveSpeed := 170
+@export var maxSpeed := 400
 
 @onready var jump_player: AudioStreamPlayer = $"../../JumpPlayer"
 
@@ -11,6 +12,7 @@ var didPlay = false
 var direction = 0
 
 func enter():
+	print("Entered", name)
 	jump_player.stream = sfx
 	jump_player.play()
 	sprite_2d.play("jump")
@@ -32,6 +34,12 @@ func physics_update(delta):
 		if player.velocity.y < maxGravity:
 			player.velocity.y += player.get_gravity().y * delta
 	player.velocity.x = move_toward(player.velocity.x, (direction * moveSpeed * 20) * delta, 1)
+	
+	if player.velocity.x <= -maxSpeed:
+		player.velocity.x = -maxSpeed
+	elif player.velocity.x >= maxSpeed:
+		player.velocity.x = maxSpeed
+	
 	player.move_and_slide()
 	
 func animate():
